@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Javkan.Ai – Voice AI for Recruiting</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎙️</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/src/style.css">
+</head>
+<body>
+<header class="hero" id="top">
+<div class="dots"></div><div class="arc"></div>
+<nav aria-label="Main">
+<a class="logo" href="#top">Javkan.Ai</a>
+<ul><li><a href="#product">How It Works</a></li><li><a href="#features">Features</a></li><li><a href="#about">About</a></li></ul>
+<div class="btns"><button class="btn w" id="nav-call-btn">Start Voice Call</button></div>
+</nav>
+<h1>Hire Faster With Voice AI Recruiting</h1>
+<p class="sub">Javkan talks to every applicant, screens them against your role, and books interviews while you focus on the people who matter.</p>
+<div class="orb"><canvas id="cv" aria-hidden="true"></canvas>
+<button class="mic" id="mic" aria-label="Start voice call"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0h-2a5 5 0 0 1-10 0z"/><rect x="11" y="18" width="2" height="4"/></svg></button></div>
+<button class="talk" id="talk"><span class="bars"><i></i><i></i><i></i><i></i><i></i></span><span id="tl">Speak With Javkan</span></button>
+<div class="status" id="st" aria-live="polite">Click to start live voice call with Javkan</div>
+<div class="controls" id="call-controls" style="display:none;">
+  <button class="btn" id="mute-btn">🎙️ Mute microphone</button>
+  <button class="btn" id="end-btn" style="border-color:#ff4d5a;color:#ff6b77;">End Call</button>
+</div>
+<div id="log" aria-live="polite"></div>
+</header>
+
+<section class="s" id="product"><div class="wrap">
+<h2>From first hello to booked interview in one call</h2>
+<p class="lead">Javkan runs the screening conversation you would, the same way every time, and hands you a ranked shortlist.</p>
+<div class="steps">
+<div class="step"><h3>Share the role</h3><p>Paste a job description. Javkan builds the screening questions and scoring rubric for you.</p></div>
+<div class="step"><h3>Candidates call or click</h3><p>Applicants talk to Javkan on your careers page, by phone or from a link in their email.</p></div>
+<div class="step"><h3>Review ranked results</h3><p>Get a transcript, a fit score and a recommended next step for every conversation.</p></div>
+</div></div></section>
+
+<section class="s" id="features" style="background:var(--bg2)"><div class="wrap">
+<h2>Built for the way recruiters actually work</h2>
+<p class="lead">Every feature exists to save you a screening call.</p>
+<div class="grid">
+<div class="card"><div class="ico">🎙️</div><h3>Natural voice screening</h3><p>Candidates speak freely. Javkan follows up, clarifies and keeps the conversation moving.</p></div>
+<div class="card"><div class="ico">📊</div><h3>Fit scoring</h3><p>Every answer is scored against your role criteria, with the reasons shown beside the score.</p></div>
+<div class="card"><div class="ico">📅</div><h3>Instant scheduling</h3><p>Javkan reads your calendar and books qualified candidates into open interview slots.</p></div>
+<div class="card"><div class="ico">🌐</div><h3>30+ languages</h3><p>Screen candidates in the language they are most comfortable speaking.</p></div>
+<div class="card"><div class="ico">🔒</div><h3>Fair and auditable</h3><p>Same questions for everyone. Full transcripts and scoring logs are saved for review.</p></div>
+<div class="card"><div class="ico">🔗</div><h3>Connects to your ATS</h3><p>Push results to Greenhouse, Lever, Workday or any system through our API.</p></div>
+</div></div></section>
+
+<section class="cta" id="about">
+<h2 style="font-size:clamp(30px,4vw,48px);font-weight:500;letter-spacing:-.025em;max-width:640px">Let Javkan take your next hundred first calls</h2>
+<button class="btn w" onclick="scrollTo({top:0})">Speak with Javkan</button>
+<p style="color:var(--mut);max-width:520px;margin:28px auto 0;font-size:15px">Javkan.Ai helps hiring teams screen candidates with live conversational voice AI.</p>
+</section>
+<footer>© 2026 Javkan.Ai. All rights reserved.</footer>
+
+<script type="module" src="/src/main.js"></script>
+</body>
+</html>
