@@ -10,6 +10,59 @@ const navCallBtn = $('nav-call-btn');
 const VAPI_KEY = import.meta.env.VITE_VAPI_PUBLIC_KEY;
 const VAPI_AID = import.meta.env.VITE_VAPI_ASSISTANT_ID;
 
+/* ---------- Analytics Tracking ---------- */
+function getOrCreateVisitorId() {
+  try {
+    let vid = document.cookie.match(/(?:^|;\s*)javkan_vid=([^;]+)/)?.[1];
+    if (!vid) {
+      vid = 'v_' + Math.random().toString(36).substring(2, 10) + Date.now().toString(36);
+      document.cookie = `javkan_vid=${vid}; path=/; max-age=31536000; SameSite=Lax`;
+    }
+    return vid;
+  } catch (_) {
+    return 'anonymous';
+  }
+}
+
+function trackEvent(event, target, details = {}) {
+  try {
+    const payload = {
+      event,
+      target,
+      visitorId: getOrCreateVisitorId(),
+      cookies: document.cookie || '',
+      path: window.location.pathname || '/',
+      referrer: document.referrer || '',
+      timestamp: new Date().toISOString(),
+      details
+    };
+    const dataStr = JSON.stringify(payload);
+    if (navigator.sendBeacon) {
+      navigator.sendBeacon('/api/track', dataStr);
+    } else {
+      fetch('/api/track', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: dataStr,
+        keepalive: true
+      }).catch(() => {});
+    }
+  } catch (_) {}
+}
+
+// Track page view on load
+trackEvent('page_view', 'landing_page');
+
+// Track link clicks
+document.addEventListener('click', (e) => {
+  const link = e.target.closest('a');
+  if (link) {
+    trackEvent('link_click', link.textContent.trim() || link.getAttribute('href'), {
+      href: link.getAttribute('href')
+    });
+  }
+});
+
 /* ---------- Audio Canvas Orb Animation ---------- */
 let W = 0, mode = 'idle', amp = 0.12, tgt = 0.12, t = 0, live = false, vol = 0;
 
@@ -120,6 +173,7 @@ function initVapi() {
     callControls.style.display = 'flex';
     log.classList.add('on');
     st.textContent = 'Connected. Javkan is ready — speak into your microphone.';
+    trackEvent('call_event', 'connected');
   });
 
   v.on('speech-start', () => {
@@ -149,6 +203,7 @@ function initVapi() {
 
   v.on('call-end', () => {
     setIdle('Call ended.');
+    trackEvent('call_event', 'ended');
   });
 
   v.on('error', (err) => {
@@ -202,28 +257,31 @@ async function startVoiceCall() {
   }
 }
 
-function stopVoiceCall() {
+function stopVoiceCall(source = 'button') {
+  trackEvent('call_action', 'stop_call', { source });
   if (vapi && live) {
     vapi.stop();
   }
 }
 
-function toggleVoiceCall() {
+function toggleVoiceCall(source = 'button') {
+  trackEvent('click', source);
   if (live) {
-    stopVoiceCall();
+    stopVoiceCall(source);
   } else {
     startVoiceCall();
   }
 }
 
-talk.onclick = toggleVoiceCall;
-mic.onclick = toggleVoiceCall;
-endBtn.onclick = stopVoiceCall;
-if (navCallBtn) navCallBtn.onclick = toggleVoiceCall;
+talk.onclick = () => toggleVoiceCall('speak_with_javkan_button');
+mic.onclick = () => toggleVoiceCall('orb_mic_button');
+endBtn.onclick = () => stopVoiceCall('end_call_button');
+if (navCallBtn) navCallBtn.onclick = () => toggleVoiceCall('nav_start_voice_call_button');
 
 muteBtn.onclick = () => {
   if (!vapi || !live) return;
   muted = !muted;
   vapi.setMuted(muted);
   muteBtn.textContent = muted ? '🔇 Unmute microphone' : '🎙️ Mute microphone';
+  trackEvent('click', 'mute_toggle_button', { muted });
 };
